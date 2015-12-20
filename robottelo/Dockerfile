@@ -1,6 +1,9 @@
 FROM fedora:latest
 MAINTAINER https://github.com/SatelliteQE
 
+ENV HOME /root
+WORKDIR /root
+
 RUN dnf -y update; dnf clean all
 RUN dnf install -y git python-devel python-pip
 RUN dnf install -y gcc make redhat-rpm-config
@@ -12,11 +15,8 @@ RUN pip install --upgrade pip
 RUN git clone https://github.com/SatelliteQE/robottelo.git
 
 # Install Python deps
-RUN cd /root/robottelo && pip install -r requirements.txt
-RUN cd /root/robottelo && pip install -r requirements-optional.txt
-
-ENV HOME /root
-WORKDIR /root
+RUN cd robottelo && pip install -r requirements.txt
+RUN cd robottelo && pip install -r requirements-optional.txt
 
 ADD startup.sh /tmp/
 RUN chmod +x /tmp/startup.sh
